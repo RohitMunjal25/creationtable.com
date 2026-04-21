@@ -1,10 +1,10 @@
 export const siteIdentity = {
   code: process.env.NEXT_PUBLIC_SITE_CODE || 'xjex0s30s1',
   name: process.env.NEXT_PUBLIC_SITE_NAME || 'Creationtable',
-  tagline: process.env.NEXT_PUBLIC_SITE_TAGLINE || 'Image + Profile platform',
+  tagline: process.env.NEXT_PUBLIC_SITE_TAGLINE || 'PDF library + expert profiles',
   description:
     process.env.NEXT_PUBLIC_SITE_DESCRIPTION ||
-    'A image + profile site for Creationtable, built for clean discovery and structured publishing.',
+    'Browse curated PDFs and professional profiles on Creationtable—focused discovery without extra clutter.',
   domain: process.env.NEXT_PUBLIC_SITE_DOMAIN || 'creationtable.com',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'https://creationtable.com',
   ogImage: process.env.NEXT_PUBLIC_SITE_OG_IMAGE || '/og-default.png',

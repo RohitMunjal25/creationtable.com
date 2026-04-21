@@ -7,4 +7,8 @@ export const TASK_MODULES: Record<TaskKey, TaskLayoutKey[]> = {
   image: ['image-masonry', 'image-portfolio'],
   profile: ['profile-creator', 'profile-business'],
   sbm: ['sbm-curation', 'sbm-library'],
+  pdf: ['article-editorial', 'article-journal'],
+  org: ['profile-business', 'profile-creator'],
+  social: ['article-editorial', 'article-journal'],
+  comment: ['article-editorial', 'article-journal'],
 }

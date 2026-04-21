@@ -232,6 +232,13 @@ export async function buildSiteMetadata(): Promise<Metadata> {
     },
     description: siteDescription,
     keywords: ctx.keywords,
+    icons: {
+      icon: [
+        { url: "/favicon.ico", sizes: "any" },
+        { url: "/favicon.png", type: "image/png" },
+      ],
+      shortcut: "/favicon.ico",
+    },
     robots: buildRobots(ctx.robotsIndex, ctx.robotsFollow),
     authors: [{ name: SITE_CONFIG.name }],
     creator: SITE_CONFIG.name,
