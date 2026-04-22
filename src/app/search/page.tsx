@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { PageShell } from "@/components/shared/page-shell";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -72,11 +73,12 @@ export default async function SearchPage({
 
   return (
     <PageShell
+      variant="teal"
       title="Search"
       description={
         query
-          ? `Results for "${query}"`
-          : "Browse the latest posts across every task."
+          ? `Results for “${query}” across PDFs and profiles.`
+          : "Search the PDF library and expert profiles—same teal layout as the rest of Creationtable."
       }
       actions={
         <form action="/search" className="flex w-full gap-2 sm:w-auto">
@@ -84,15 +86,15 @@ export default async function SearchPage({
           {category ? <input type="hidden" name="category" value={category} /> : null}
           {task ? <input type="hidden" name="task" value={task} /> : null}
           <div className="relative w-full sm:w-80">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-teal-200/80" />
             <Input
               name="q"
               defaultValue={query}
-              placeholder="Search across tasks..."
-              className="h-11 pl-9"
+              placeholder="PDF titles, topics, or people…"
+              className="h-11 border-white/20 bg-white/15 pl-9 text-white placeholder:text-teal-200/70 focus-visible:ring-teal-300/40"
             />
           </div>
-          <Button type="submit" className="h-11">
+          <Button type="submit" className="h-11 rounded-full border-0 bg-white font-semibold text-teal-900 hover:bg-teal-50">
             Search
           </Button>
         </form>
@@ -107,8 +109,13 @@ export default async function SearchPage({
           })}
         </div>
       ) : (
-        <div className="rounded-2xl border border-dashed border-border p-10 text-center text-muted-foreground">
-          No matching posts yet.
+        <div className="rounded-3xl border border-dashed border-teal-200 bg-teal-50/50 p-12 text-center text-slate-600">
+          <p className="font-medium text-slate-800">No matching PDFs or profiles yet.</p>
+          <p className="mt-2 text-sm">
+            Try a shorter keyword, clear filters, or browse the{" "}
+            <Link className="font-semibold text-teal-700 underline" href="/pdf">PDF library</Link> and{" "}
+            <Link className="font-semibold text-teal-700 underline" href="/profile">profiles</Link> directly.
+          </p>
         </div>
       )}
     </PageShell>

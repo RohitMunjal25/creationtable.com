@@ -1,18 +1,18 @@
 import type { SiteRecipe } from '@/design/factory/recipe-types'
 
 export const SITE_RECIPE: SiteRecipe = {
-  productFamily: 'directory',
-  themePack: 'yelp-local',
-  homepageTemplate: 'listing-home',
-  navbarTemplate: 'compact-bar',
-  footerTemplate: 'columns-footer',
-  motionPack: 'minimal',
-  primaryTask: 'listing',
-  enabledTasks: ['listing', 'classified', 'profile'],
+  productFamily: 'visual',
+  themePack: 'pinterest-creator',
+  homepageTemplate: 'image-profile-home',
+  navbarTemplate: 'floating-bar',
+  footerTemplate: 'dense-footer',
+  motionPack: 'studio-stagger',
+  primaryTask: 'pdf',
+  enabledTasks: ['pdf', 'profile'],
   taskTemplates: {
-    listing: 'listing-directory',
-    classified: 'classified-market',
-    profile: 'profile-business',
+    image: 'image-masonry',
+    profile: 'profile-creator',
+    pdf: 'article-editorial',
   },
   manualOverrides: {
     navbar: false,
@@ -26,5 +26,3 @@ export const SITE_RECIPE: SiteRecipe = {
     registerPage: false,
   },
 }
-
-

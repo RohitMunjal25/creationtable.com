@@ -2,25 +2,24 @@ import type { TaskKey } from '@/lib/site-config'
 
 export const siteContent = {
   navbar: {
-    tagline: 'Independent reading platform',
+    tagline: 'PDF library + expert profiles',
   },
   footer: {
-    tagline: 'Stories, resources, and discoverable posts',
+    tagline: 'PDF library + expert profiles',
   },
   hero: {
-    badge: 'Latest stories and visuals',
-    title: ['A thoughtful home for', 'stories, visuals, and discovery.'],
-    description:
-      'Explore fresh articles, image-led posts, and discoverable content across the platform through a calmer and clearer browsing experience.',
+    badge: 'Documents & people',
+    title: ['A focused home for', 'PDFs and professional profiles.'],
+    description: 'Find downloadable PDFs and trusted profiles on Creationtable—built for quick search, clear previews, and confident next steps.',
     primaryCta: {
-      label: 'Read latest stories',
-      href: '/articles',
+      label: 'Browse PDFs',
+      href: '/pdf',
     },
     secondaryCta: {
-      label: 'Explore visuals',
-      href: '/images',
+      label: 'View profiles',
+      href: '/profile',
     },
-    searchPlaceholder: 'Search stories, visuals, listings, and more',
+    searchPlaceholder: 'Search PDFs, topics, and people',
     focusLabel: 'Focus',
     featureCardBadge: 'latest cover rotation',
     featureCardTitle: 'Latest posts shape the visual identity of the homepage.',
@@ -29,49 +28,47 @@ export const siteContent = {
   },
   home: {
     metadata: {
-      title: 'Stories, visuals, and discoverable content',
-      description:
-        'Explore articles, images, listings, and curated posts through a cleaner reading-first experience.',
-      openGraphTitle: 'Stories, visuals, and discoverable content',
+      title: 'PDFs and professional profiles',
+      description: 'Search curated PDFs and expert profiles—download resources and discover the right people in one place.',
+      openGraphTitle: 'PDFs and professional profiles',
       openGraphDescription:
-        'Discover articles, visual posts, and connected content through a calmer reading-first experience.',
-      keywords: ['story platform', 'article site', 'visual content', 'content discovery'],
+        'Browse a PDF library and structured expert profiles with search-first navigation and clear previews.',
+      keywords: ['pdf library', 'downloadable documents', 'expert profiles', 'professional bios', 'resource discovery'],
     },
     introBadge: 'About the platform',
-    introTitle: 'Built for reading, browsing, and connecting different kinds of content.',
+    introTitle: 'Built for documents and the people behind them.',
     introParagraphs: [
-      'This site brings together article-style reading, visual browsing, and structured discovery so visitors can move naturally between different content types.',
-      'Instead of separating stories, visuals, and supporting resources into disconnected surfaces, the platform keeps them connected in one place with consistent navigation and easier exploration.',
-      'Whether someone starts with a story, an image-led post, a listing, or a resource page, they can keep discovering related content without friction.',
+      'This site centers on downloadable PDFs and public profiles so teams can find authoritative files and credible experts without unrelated feeds.',
+      'Search, preview, and open the right asset or person faster—then continue with clear metadata and consistent card layouts.',
+      'Whether someone starts with a playbook, a compliance pack, or a specialist profile, the experience stays focused on PDFs and profiles.',
     ],
     sideBadge: 'At a glance',
     sidePoints: [
-      'Reading-first homepage with stronger emphasis on stories and imagery.',
-      'Connected sections for articles, visuals, listings, and supporting resources.',
-      'Cleaner browsing rhythm designed to make exploration feel easier.',
-      'Lightweight interactions that keep the experience fast and readable.',
+      'Search-first entry points tuned for PDF titles, topics, and names.',
+      'Profile surfaces that highlight expertise alongside related documents.',
+      'Fewer distractions: no classifieds, listings, or generic social feeds on the homepage.',
+      'Fast interactions that keep browsing lightweight and readable.',
     ],
     primaryLink: {
-      label: 'Browse articles',
-      href: '/articles',
+      label: 'Open PDF library',
+      href: '/pdf',
     },
     secondaryLink: {
-      label: 'See visuals',
-      href: '/images',
+      label: 'Browse profiles',
+      href: '/profile',
     },
   },
   cta: {
     badge: 'Start exploring',
-    title: 'Explore articles, visuals, and resources through one connected experience.',
-    description:
-      'Move between articles, image-led posts, listings, and resources through one clearer and more connected visual system.',
+    title: 'Explore PDFs and expert profiles through one connected experience.',
+    description: 'Download the documents you need and discover the people who publish them—without switching tools.',
     primaryCta: {
-      label: 'Get Started Free',
-      href: '/register',
+      label: 'Browse PDFs',
+      href: '/pdf',
     },
     secondaryCta: {
-      label: 'Contact Sales',
-      href: '/contact',
+      label: 'View profiles',
+      href: '/profile',
     },
   },
   taskSectionHeading: 'Latest {label}',
@@ -81,31 +78,31 @@ export const siteContent = {
 export const taskPageMetadata: Record<Exclude<TaskKey, 'comment' | 'org' | 'social'>, { title: string; description: string }> = {
   article: {
     title: 'Articles and stories',
-    description: 'Read articles, stories, guides, and long-form posts across topics and interests.',
+    description: 'A Image + Profile site for Creationtable, built for clean discovery and structured publishing.',
   },
   listing: {
     title: 'Listings and discoverable pages',
-    description: 'Explore listings, services, brands, and structured pages organized for easier browsing.',
+    description: 'A Image + Profile site for Creationtable, built for clean discovery and structured publishing.',
   },
   classified: {
     title: 'Classifieds and announcements',
-    description: 'Browse classifieds, offers, notices, and time-sensitive posts across categories.',
+    description: 'A Image + Profile site for Creationtable, built for clean discovery and structured publishing.',
   },
   image: {
     title: 'Images and visual posts',
-    description: 'Explore image-led posts, galleries, and visual stories from across the platform.',
+    description: 'A Image + Profile site for Creationtable, built for clean discovery and structured publishing.',
   },
   profile: {
     title: 'Profiles and public pages',
-    description: 'Discover public profiles, brand pages, and identity-focused posts in one place.',
+    description: 'A Image + Profile site for Creationtable, built for clean discovery and structured publishing.',
   },
   sbm: {
     title: 'Curated links and saved resources',
-    description: 'Browse useful links, saved references, and curated resources organized for discovery.',
+    description: 'A Image + Profile site for Creationtable, built for clean discovery and structured publishing.',
   },
   pdf: {
     title: 'PDFs and downloadable resources',
-    description: 'Open reports, documents, and downloadable resources shared across the platform.',
+    description: 'A Image + Profile site for Creationtable, built for clean discovery and structured publishing.',
   },
 }
 
@@ -173,9 +170,8 @@ export const taskIntroCopy: Record<
       'Browse profiles to understand people and brands more clearly, then continue into related content from the same source.',
     ],
     links: [
-      { label: 'Open listings', href: '/listings' },
-      { label: 'Read articles', href: '/articles' },
-      { label: 'Browse images', href: '/images' },
+      { label: 'Open PDF library', href: '/pdf' },
+      { label: 'Search people & docs', href: '/search' },
     ],
   },
   sbm: {
@@ -199,9 +195,8 @@ export const taskIntroCopy: Record<
       'Browse by category to find relevant files quickly, then continue into related sections when you want more context.',
     ],
     links: [
-      { label: 'Read articles', href: '/articles' },
-      { label: 'See listings', href: '/listings' },
       { label: 'Explore profiles', href: '/profile' },
+      { label: 'Search library', href: '/search' },
     ],
   },
   social: {
