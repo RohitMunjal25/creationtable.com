@@ -57,11 +57,23 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
   }))
   const { recipe } = getFactoryState()
   const layoutKey = recipe.taskLayouts[task as keyof typeof recipe.taskLayouts] || `${task}-${task === 'listing' ? 'directory' : 'editorial'}`
-  const shellClass = variantShells[layoutKey as keyof typeof variantShells] || 'bg-background'
+  const isTealMarketing = task === 'pdf' || task === 'profile'
+  const shellClass = isTealMarketing
+    ? 'bg-gradient-to-b from-teal-50 via-white to-slate-50 text-slate-900'
+    : variantShells[layoutKey as keyof typeof variantShells] || 'bg-background'
   const Icon = taskIcons[task] || LayoutGrid
 
-  const isDark = ['image-masonry', 'image-portfolio', 'profile-creator'].includes(layoutKey)
-  const ui = isDark
+  const isDark = !isTealMarketing && ['image-masonry', 'image-portfolio', 'profile-creator'].includes(layoutKey)
+  const uiTeal = {
+    muted: 'text-slate-600',
+    panel: 'border border-teal-100 bg-white shadow-sm',
+    soft: 'border border-teal-100 bg-teal-50/80',
+    input: 'border border-teal-200 bg-white text-slate-900',
+    button: 'bg-teal-600 text-white hover:bg-teal-500',
+  }
+  const ui = isTealMarketing
+    ? uiTeal
+    : isDark
     ? {
         muted: 'text-slate-300',
         panel: 'border border-white/10 bg-white/6',
@@ -89,6 +101,56 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
     <div className={`min-h-screen ${shellClass}`}>
       <NavbarShell />
       <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        {isTealMarketing ? (
+          <section className="relative mb-12 overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-teal-950 via-teal-900 to-teal-600 p-8 text-white shadow-xl sm:p-10 lg:p-12">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(45,212,191,0.22),transparent_55%)]" />
+            <div className="relative grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-teal-200/90">
+                  {task === 'pdf' ? 'PDF library' : 'Expert profiles'}
+                </p>
+                <h1 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
+                  {task === 'pdf'
+                    ? 'Download-ready documents, organized like a product—not a folder dump.'
+                    : 'Meet the people behind the PDFs—structured profiles with trust cues.'}
+                </h1>
+                <p className="mt-5 max-w-2xl text-sm leading-relaxed text-teal-100/95 sm:text-base">
+                  {task === 'pdf'
+                    ? 'Browse playbooks, policies, templates, and research packs with the same teal experience as the homepage. Filter by category, preview summaries, and open the file you need with confidence.'
+                    : 'Explore bios, focus areas, and credibility signals in a layout built for hiring, partnerships, and research—without unrelated listings or feeds.'}
+                </p>
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <Link href="/search" className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-teal-900 shadow-sm hover:bg-teal-50">
+                    Open search
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                  <Link
+                    href={task === 'pdf' ? '/profile' : '/pdf'}
+                    className="inline-flex items-center gap-2 rounded-full border border-white/30 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/10"
+                  >
+                    {task === 'pdf' ? 'View profiles' : 'Browse PDFs'}
+                  </Link>
+                </div>
+              </div>
+              <form className="grid gap-3 rounded-3xl border border-white/20 bg-white/10 p-6 backdrop-blur-sm" action={taskConfig?.route || '#'}>
+                <div>
+                  <label className="text-xs font-semibold uppercase tracking-widest text-teal-100/90">Category</label>
+                  <select name="category" defaultValue={normalizedCategory} className="mt-2 h-11 w-full rounded-xl border border-white/20 bg-teal-950/40 px-3 text-sm text-white outline-none focus:ring-2 focus:ring-teal-300/40">
+                    <option value="all">All categories</option>
+                    {CATEGORY_OPTIONS.map((item) => (
+                      <option key={item.slug} value={item.slug}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <button type="submit" className="h-11 rounded-xl bg-white text-sm font-semibold text-teal-900 hover:bg-teal-50">
+                  Apply filters
+                </button>
+              </form>
+            </div>
+          </section>
+        ) : null}
         {task === 'listing' ? (
           <SchemaJsonLd
             data={[
@@ -120,7 +182,7 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
           />
         ) : null}
 
-        {layoutKey === 'listing-directory' || layoutKey === 'listing-showcase' ? (
+        {!isTealMarketing && (layoutKey === 'listing-directory' || layoutKey === 'listing-showcase') ? (
           <section className="mb-12 grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
             <div className={`rounded-[2rem] p-7 shadow-[0_24px_70px_rgba(15,23,42,0.07)] ${ui.panel}`}>
               <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.24em] opacity-70"><Icon className="h-4 w-4" /> {taskConfig?.label || task}</div>
@@ -146,7 +208,7 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
           </section>
         ) : null}
 
-        {layoutKey === 'article-editorial' || layoutKey === 'article-journal' ? (
+        {!isTealMarketing && (layoutKey === 'article-editorial' || layoutKey === 'article-journal') ? (
           <section className="mb-12 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
             <div>
               <p className={`text-xs uppercase tracking-[0.3em] ${ui.muted}`}>{taskConfig?.label || task}</p>
@@ -169,7 +231,7 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
           </section>
         ) : null}
 
-        {layoutKey === 'image-masonry' || layoutKey === 'image-portfolio' ? (
+        {!isTealMarketing && (layoutKey === 'image-masonry' || layoutKey === 'image-portfolio') ? (
           <section className="mb-12 grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
             <div>
               <div className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] ${ui.soft}`}>
@@ -186,7 +248,7 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
           </section>
         ) : null}
 
-        {layoutKey === 'profile-creator' || layoutKey === 'profile-business' ? (
+        {!isTealMarketing && (layoutKey === 'profile-creator' || layoutKey === 'profile-business') ? (
           <section className={`mb-12 rounded-[2.2rem] p-8 shadow-[0_24px_70px_rgba(15,23,42,0.1)] ${ui.panel}`}>
             <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
               <div className={`min-h-[240px] rounded-[2rem] ${ui.soft}`} />
@@ -199,7 +261,7 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
           </section>
         ) : null}
 
-        {layoutKey === 'classified-bulletin' || layoutKey === 'classified-market' ? (
+        {!isTealMarketing && (layoutKey === 'classified-bulletin' || layoutKey === 'classified-market') ? (
           <section className="mb-12 grid gap-4 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
             <div className={`rounded-[1.8rem] p-6 ${ui.panel}`}>
               <p className={`text-xs uppercase tracking-[0.3em] ${ui.muted}`}>{taskConfig?.label || task}</p>
@@ -215,7 +277,7 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
           </section>
         ) : null}
 
-        {layoutKey === 'sbm-curation' || layoutKey === 'sbm-library' ? (
+        {!isTealMarketing && (layoutKey === 'sbm-curation' || layoutKey === 'sbm-library') ? (
           <section className="mb-12 grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
             <div>
               <p className={`text-xs uppercase tracking-[0.3em] ${ui.muted}`}>{taskConfig?.label || task}</p>
@@ -237,7 +299,7 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
           </section>
         ) : null}
 
-        {intro ? (
+        {intro && !isTealMarketing ? (
           <section className={`mb-12 rounded-[2rem] p-6 shadow-[0_18px_50px_rgba(15,23,42,0.06)] sm:p-8 ${ui.panel}`}>
             <h2 className="text-2xl font-semibold text-foreground">{intro.title}</h2>
             {intro.paragraphs.map((paragraph) => (

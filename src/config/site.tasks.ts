@@ -29,7 +29,7 @@ export const siteTaskDefinitions = [
     route: '/images',
     description: 'Galleries and media-first posts.',
     contentType: 'image',
-    enabled: true,
+    enabled: false,
   },
   {
     key: 'profile',
@@ -61,7 +61,7 @@ export const siteTaskDefinitions = [
     route: '/pdf',
     description: 'PDF resources and downloads.',
     contentType: 'pdf',
-    enabled: false,
+    enabled: true,
   },
   {
     key: 'org',
