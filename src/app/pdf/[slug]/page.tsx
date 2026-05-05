@@ -1,13 +1,17 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Download, FileText, Eye, ExternalLink, ArrowRight } from "lucide-react";
 
 import { Footer } from "@/components/shared/footer";
 import { NavbarShell } from "@/components/shared/navbar-shell";
 import { TaskPostCard } from "@/components/shared/task-post-card";
+import { ShareButton } from "@/components/shared/share-button";
+import { FollowButton } from "@/components/shared/follow-button";
 import { SchemaJsonLd } from "@/components/seo/schema-jsonld";
 import { buildPostMetadata, buildTaskMetadata } from "@/lib/seo";
 import { buildPostUrl, fetchTaskPostBySlug, fetchTaskPosts } from "@/lib/task-data";
 import { SITE_CONFIG } from "@/lib/site-config";
+import { Badge } from "@/components/ui/badge";
 
 export const revalidate = 3;
 
@@ -48,6 +52,7 @@ export default async function PdfDetailPage({ params }: { params: Promise<{ slug
     (typeof contentAny.fileUrl === "string" && contentAny.fileUrl) ||
     (typeof contentAny.pdfUrl === "string" && contentAny.pdfUrl) ||
     "";
+  const description = typeof contentAny.description === "string" ? contentAny.description : post.summary || "";
 
   if (!fileUrl || !/^https?:\/\//i.test(fileUrl)) {
     notFound();
@@ -95,43 +100,80 @@ export default async function PdfDetailPage({ params }: { params: Promise<{ slug
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-b from-teal-50 via-white to-slate-50">
       <NavbarShell />
-      <main className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <SchemaJsonLd data={breadcrumbData} />
-        <Link
-          href="/pdf"
-          className="text-sm text-muted-foreground hover:text-foreground"
-        >
-          ← Back to PDF Library
-        </Link>
-        <h1 className="text-2xl font-semibold text-foreground">{post.title}</h1>
-        <div className="overflow-hidden rounded-2xl bg-background">
+        
+        {/* Header */}
+        <div className="mb-8">
+          <Link
+            href="/pdf"
+            className="inline-flex items-center gap-2 text-sm font-medium text-teal-700 hover:text-teal-600 transition-colors"
+          >
+            <ArrowRight className="h-4 w-4 rotate-180" />
+            Back to PDF Library
+          </Link>
+          
+          <div className="mt-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            <div className="flex-1">
+              <div className="flex items-center gap-3">
+                <Badge className="bg-teal-600 text-white hover:bg-teal-700">
+                  <FileText className="h-3 w-3 mr-1" />
+                  PDF Document
+                </Badge>
+                {category && (
+                  <Badge variant="outline" className="border-teal-200 text-teal-700">
+                    {category}
+                  </Badge>
+                )}
+              </div>
+              <h1 className="mt-4 text-3xl font-bold text-slate-900 sm:text-4xl lg:text-5xl tracking-tight">{post.title}</h1>
+              {description && (
+                <p className="mt-3 max-w-2xl text-lg text-slate-600 leading-relaxed">{description}</p>
+              )}
+              
+              {/* Action Buttons */}
+              <div className="mt-6 flex flex-wrap gap-3">
+                <a
+                  href={fileUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-xl bg-teal-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-teal-600/30 hover:bg-teal-500 transition-all hover:shadow-xl hover:shadow-teal-600/40"
+                >
+                  <Download className="h-4 w-4" />
+                  Download PDF
+                </a>
+                <ShareButton />
+                <FollowButton />
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* PDF Viewer */}
+        <div className="relative overflow-hidden rounded-3xl border-2 border-teal-100 bg-white shadow-2xl shadow-teal-900/10">
+          <div className="absolute inset-0 bg-gradient-to-br from-teal-500/5 to-transparent pointer-events-none" />
           <iframe
             src={viewerUrl}
             title={post.title}
-            className="h-[85vh] w-full"
+            className="relative h-[85vh] w-full"
           />
         </div>
-        <div className="flex items-center gap-3">
-          <a
-            href={fileUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-muted"
-          >
-            Download PDF
-          </a>
-        </div>
+        {/* Related PDFs */}
         {related.length ? (
-          <section className="pt-4">
-            <div className="mb-3 flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-foreground">More like this</h2>
+          <section className="mt-16">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h2 className="text-2xl font-bold text-slate-900">More like this</h2>
+                <p className="mt-1 text-slate-600">Similar PDFs you might find useful</p>
+              </div>
               <Link
                 href="/pdf"
-                className="text-sm text-muted-foreground hover:text-foreground"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-teal-700 hover:text-teal-600 transition-colors"
               >
                 View all
+                <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -143,22 +185,31 @@ export default async function PdfDetailPage({ params }: { params: Promise<{ slug
                 />
               ))}
             </div>
-            <nav className="mt-6 rounded-2xl border border-border bg-card/60 p-4">
-              <p className="text-sm font-semibold text-foreground">Related links</p>
-              <ul className="mt-2 space-y-2 text-sm">
+            
+            {/* Related Links */}
+            <nav className="mt-8 rounded-3xl border border-teal-100 bg-gradient-to-br from-teal-50 to-white p-6 shadow-lg shadow-teal-900/5">
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-500 mb-4">Related Links</h3>
+              <ul className="space-y-3">
                 {related.map((item) => (
                   <li key={`related-${item.id}`}>
                     <Link
                       href={buildPostUrl("pdf", item.slug)}
-                      className="text-primary underline-offset-4 hover:underline"
+                      className="group flex items-center gap-3 rounded-xl p-3 text-slate-700 hover:bg-white hover:shadow-md transition-all"
                     >
-                      {item.title}
+                      <FileText className="h-5 w-5 text-teal-600" />
+                      <span className="flex-1 font-medium group-hover:text-teal-700 transition-colors">{item.title}</span>
+                      <ExternalLink className="h-4 w-4 text-slate-400 group-hover:text-teal-600 transition-colors" />
                     </Link>
                   </li>
                 ))}
                 <li>
-                  <Link href="/pdf" className="text-primary underline-offset-4 hover:underline">
-                    Browse all PDFs
+                  <Link
+                    href="/pdf"
+                    className="group flex items-center gap-3 rounded-xl p-3 text-slate-700 hover:bg-white hover:shadow-md transition-all"
+                  >
+                    <Eye className="h-5 w-5 text-teal-600" />
+                    <span className="flex-1 font-medium group-hover:text-teal-700 transition-colors">Browse all PDFs</span>
+                    <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-teal-600 transition-colors" />
                   </Link>
                 </li>
               </ul>
