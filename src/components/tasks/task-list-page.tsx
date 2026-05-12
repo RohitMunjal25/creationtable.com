@@ -1,8 +1,10 @@
 import Link from 'next/link'
-import { ArrowRight, Building2, FileText, Image as ImageIcon, LayoutGrid, Tag, User } from 'lucide-react'
+import { ArrowRight, Building2, FileText, Image as ImageIcon, LayoutGrid, Tag, User, Share2, UserPlus, Check, ExternalLink } from 'lucide-react'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
 import { TaskListClient } from '@/components/tasks/task-list-client'
+import { ShareButton } from '@/components/shared/share-button'
+import { FollowButton } from '@/components/shared/follow-button'
 import { SchemaJsonLd } from '@/components/seo/schema-jsonld'
 import { fetchTaskPosts } from '@/lib/task-data'
 import { SITE_CONFIG, getTaskConfig, type TaskKey } from '@/lib/site-config'
@@ -10,6 +12,7 @@ import { CATEGORY_OPTIONS, normalizeCategory } from '@/lib/categories'
 import { taskIntroCopy } from '@/config/site.content'
 import { getFactoryState } from '@/design/factory/get-factory-state'
 import { TASK_LIST_PAGE_OVERRIDE_ENABLED, TaskListPageOverride } from '@/overrides/task-list-page'
+import { Button } from '@/components/ui/button'
 
 const taskIcons: Record<TaskKey, any> = {
   listing: Building2,
@@ -101,6 +104,8 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
     <div className={`min-h-screen ${shellClass}`}>
       <NavbarShell />
       <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="grid gap-8 lg:grid-cols-[1fr,320px]">
+          <div>
         {isTealMarketing ? (
           <section className="relative mb-12 overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-teal-950 via-teal-900 to-teal-600 p-8 text-white shadow-xl sm:p-10 lg:p-12">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(45,212,191,0.22),transparent_55%)]" />
@@ -314,6 +319,31 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
         ) : null}
 
         <TaskListClient task={task} initialPosts={posts} category={normalizedCategory} />
+
+          </div>
+          
+          {/* Sidebar Uploads */}
+          <aside className="space-y-6">
+            <div className="rounded-3xl border border-border/60 bg-white/90 p-6 shadow-sm">
+              <h2 className="text-lg font-semibold text-foreground mb-4">Uploads</h2>
+              <div className="space-y-3">
+                <div className="text-center py-8">
+                  <div className="text-2xl font-bold text-muted-foreground mb-2">0</div>
+                  <p className="text-sm text-muted-foreground">uploads</p>
+                </div>
+              </div>
+            </div>
+            
+            {/* Quick Actions */}
+            <div className="rounded-3xl border border-border/60 bg-white/90 p-6 shadow-sm">
+              <h2 className="text-lg font-semibold text-foreground mb-4">Quick actions</h2>
+              <div className="space-y-3">
+                <ShareButton />
+                <FollowButton />
+              </div>
+            </div>
+          </aside>
+        </div>
       </main>
       <Footer />
     </div>
