@@ -4,12 +4,15 @@ import { Footer } from "@/components/shared/footer";
 import { NavbarShell } from "@/components/shared/navbar-shell";
 import { ContentImage } from "@/components/shared/content-image";
 import { TaskPostCard } from "@/components/shared/task-post-card";
+import { ShareButton } from "@/components/shared/share-button";
+import { FollowButton } from "@/components/shared/follow-button";
 import { Button } from "@/components/ui/button";
 import { SchemaJsonLd } from "@/components/seo/schema-jsonld";
 import { buildPostUrl } from "@/lib/task-data";
 import { buildPostMetadata, buildTaskMetadata } from "@/lib/seo";
 import { fetchTaskPostBySlug, fetchTaskPosts } from "@/lib/task-data";
 import { SITE_CONFIG } from "@/lib/site-config";
+import { ExternalLink } from "lucide-react";
 
 export const revalidate = 3;
 
@@ -109,42 +112,68 @@ export default async function ProfileDetailPage({ params }: { params: Promise<{ 
   return (
     <div className="min-h-screen bg-background">
       <NavbarShell />
-      <main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-10 sm:px-6 lg:px-8">
+      <main className="mx-auto w-full max-w-7xl px-4 pb-16 pt-10 sm:px-6 lg:px-8">
         <SchemaJsonLd data={breadcrumbData} />
-        <section className="rounded-3xl border border-border/60 bg-white/90 p-8 shadow-sm md:p-12">
-          <div className="grid gap-8 md:grid-cols-[200px_1fr] md:items-start">
-            <div className="flex justify-center md:justify-start">
-              <div className="relative h-36 w-36 overflow-hidden rounded-full border border-border/70 bg-muted">
-                {logoUrl ? (
-                  <ContentImage src={logoUrl} alt={post.title} fill className="object-cover" sizes="144px" intrinsicWidth={144} intrinsicHeight={144} />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center text-3xl font-semibold text-muted-foreground">
-                    {post.title.slice(0, 1).toUpperCase()}
+        <div className="grid gap-8 lg:grid-cols-[1fr,320px]">
+          {/* Main Profile Content */}
+          <section className="rounded-3xl border border-border/60 bg-white/90 p-8 shadow-sm md:p-12">
+            <div className="grid gap-8 md:grid-cols-[200px_1fr] md:items-start">
+              <div className="flex justify-center md:justify-start">
+                <div className="relative h-36 w-36 overflow-hidden rounded-full border border-border/70 bg-muted">
+                  {logoUrl ? (
+                    <ContentImage src={logoUrl} alt={post.title} fill className="object-cover" sizes="144px" intrinsicWidth={144} intrinsicHeight={144} />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center text-3xl font-semibold text-muted-foreground">
+                      {post.title.slice(0, 1).toUpperCase()}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="space-y-6">
+                <div>
+                  <h1 className="text-3xl font-bold text-foreground sm:text-4xl">{brandName}</h1>
+                  {domain ? (
+                    <p className="mt-1 text-sm font-medium text-muted-foreground">{domain}</p>
+                  ) : null}
+                </div>
+                
+                {/* Action Buttons */}
+                <div className="flex flex-wrap gap-3">
+                  <ShareButton />
+                  <FollowButton />
+                </div>
+                
+                {/* Website Link */}
+                {website ? (
+                  <div className="flex items-center gap-2">
+                    <Link 
+                      href={website} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+                    >
+                      Website
+                      <ExternalLink className="h-3 w-3" />
+                    </Link>
                   </div>
-                )}
+                ) : null}
               </div>
             </div>
-            <div>
-              <h1 className="text-3xl font-bold text-foreground sm:text-4xl">{brandName}</h1>
-              {domain ? (
-                <p className="mt-1 text-sm font-medium text-muted-foreground">{domain}</p>
-              ) : null}
-              <article
-                className="article-content prose prose-slate mt-6 max-w-2xl text-base leading-relaxed prose-p:my-4 prose-a:text-primary prose-a:underline prose-strong:font-semibold"
-                dangerouslySetInnerHTML={{ __html: descriptionHtml }}
-              />
-              {website ? (
-                <div className="mt-8">
-                  <Button asChild size="lg" className="px-7 text-base">
-                    <Link href={website} target="_blank" rel="noopener noreferrer">
-                      Visit Official Site
-                    </Link>
-                  </Button>
+          </section>
+          
+          {/* Sidebar Uploads */}
+          <aside className="space-y-6">
+            <div className="rounded-3xl border border-border/60 bg-white/90 p-6 shadow-sm">
+              <h2 className="text-lg font-semibold text-foreground mb-4">Uploads</h2>
+              <div className="space-y-3">
+                <div className="text-center py-8">
+                  <div className="text-2xl font-bold text-muted-foreground mb-2">0</div>
+                  <p className="text-sm text-muted-foreground">uploads</p>
                 </div>
-              ) : null}
+              </div>
             </div>
-          </div>
-        </section>
+          </aside>
+        </div>
 
         {suggestedArticles.length ? (
           <section className="mt-12">

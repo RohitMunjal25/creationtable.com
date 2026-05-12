@@ -1,10 +1,12 @@
 import { ContentImage } from "@/components/shared/content-image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { MapPin, Globe, Phone, Tag, Mail } from "lucide-react";
+import { MapPin, Globe, Phone, Tag, Mail, Share2, UserPlus, ExternalLink } from "lucide-react";
 import { NavbarShell } from "@/components/shared/navbar-shell";
 import { Footer } from "@/components/shared/footer";
 import { TaskPostCard } from "@/components/shared/task-post-card";
+import { ShareButton } from "@/components/shared/share-button";
+import { FollowButton } from "@/components/shared/follow-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { buildPostUrl, fetchTaskPostBySlug, fetchTaskPosts } from "@/lib/task-data";
@@ -261,8 +263,7 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
 
         <div
           className={cn(
-            "grid gap-10",
-            hideSidebar ? "lg:grid-cols-1" : "lg:grid-cols-[2fr_1fr]"
+            "grid gap-8 lg:grid-cols-[1fr,320px]"
           )}
         >
           <div className={cn(isClassified ? "space-y-8" : "")}>
@@ -316,7 +317,7 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
                   </div>
                 ) : null}
 
-                <div className={cn(isClassified ? "mx-auto w-full max-w-4xl" : "mt-6")}>
+                <div className={cn(isClassified ? "mx-auto w-full max-w-4xl" : "mt-6 space-y-6")}>
                   <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
                     <Badge variant="secondary" className="inline-flex items-center gap-1">
                       <Tag className="h-3.5 w-3.5" />
@@ -329,8 +330,30 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
                       </span>
                     )}
                   </div>
-                  <h1 className="mt-4 text-3xl font-semibold text-foreground">{post.title}</h1>
-                  <RichContent html={descriptionHtml} className="mt-3 max-w-3xl" />
+                  <h1 className="text-3xl font-semibold text-foreground">{post.title}</h1>
+                  
+                  {/* Action Buttons */}
+                  <div className="flex flex-wrap gap-3">
+                    <ShareButton />
+                    <FollowButton />
+                  </div>
+                  
+                  <RichContent html={descriptionHtml} className="max-w-3xl" />
+                  
+                  {/* Website Link */}
+                  {content.website ? (
+                    <div className="flex items-center gap-2">
+                      <Link 
+                        href={content.website} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+                      >
+                        Website
+                        <ExternalLink className="h-3 w-3" />
+                      </Link>
+                    </div>
+                  ) : null}
                 </div>
               </>
             ) : null}
@@ -406,48 +429,59 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
 
           </div>
 
-          {!hideSidebar ? (
-            <aside className="space-y-6">
-            <div className="rounded-2xl border border-border bg-card p-6">
-              <h2 className="text-lg font-semibold text-foreground">Listing details</h2>
-                <div className="mt-4 space-y-3 text-sm text-muted-foreground">
-                  {content.website && (
-                    <div className="flex items-start gap-2">
-                      <Globe className="mt-0.5 h-4 w-4" />
-                      <a
-                        href={content.website}
-                        className="break-all text-foreground hover:underline"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {content.website}
-                      </a>
-                    </div>
-                  )}
-                  {content.phone && (
-                    <div className="flex items-start gap-2">
-                      <Phone className="mt-0.5 h-4 w-4" />
-                      <span>{content.phone}</span>
-                    </div>
-                  )}
-                  {content.email && (
-                    <div className="flex items-start gap-2">
-                      <Mail className="mt-0.5 h-4 w-4" />
-                      <a
-                        href={`mailto:${content.email}`}
-                        className="break-all text-foreground hover:underline"
-                      >
-                        {content.email}
-                      </a>
-                    </div>
-                  )}
-                  {location && (
-                    <div className="flex items-start gap-2">
-                      <MapPin className="mt-0.5 h-4 w-4" />
-                      <span>{location}</span>
-                    </div>
-                  )}
+          {/* Sidebar Uploads */}
+          <aside className="space-y-6">
+            <div className="rounded-3xl border border-border/60 bg-white/90 p-6 shadow-sm">
+              <h2 className="text-lg font-semibold text-foreground mb-4">Uploads</h2>
+              <div className="space-y-3">
+                <div className="text-center py-8">
+                  <div className="text-2xl font-bold text-muted-foreground mb-2">0</div>
+                  <p className="text-sm text-muted-foreground">uploads</p>
                 </div>
+              </div>
+            </div>
+            
+            {/* Contact Details */}
+            <div className="rounded-3xl border border-border/60 bg-white/90 p-6 shadow-sm">
+              <h2 className="text-lg font-semibold text-foreground mb-4">Contact details</h2>
+              <div className="space-y-3 text-sm text-muted-foreground">
+                {content.website && (
+                  <div className="flex items-start gap-2">
+                    <Globe className="mt-0.5 h-4 w-4" />
+                    <a
+                      href={content.website}
+                      className="break-all text-foreground hover:underline"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {content.website}
+                    </a>
+                  </div>
+                )}
+                {content.phone && (
+                  <div className="flex items-start gap-2">
+                    <Phone className="mt-0.5 h-4 w-4" />
+                    <span>{content.phone}</span>
+                  </div>
+                )}
+                {content.email && (
+                  <div className="flex items-start gap-2">
+                    <Mail className="mt-0.5 h-4 w-4" />
+                    <a
+                      href={`mailto:${content.email}`}
+                      className="break-all text-foreground hover:underline"
+                    >
+                      {content.email}
+                    </a>
+                  </div>
+                )}
+                {location && (
+                  <div className="flex items-start gap-2">
+                    <MapPin className="mt-0.5 h-4 w-4" />
+                    <span>{location}</span>
+                  </div>
+                )}
+              </div>
               {content.website ? (
                 <Button className="mt-5 w-full" asChild>
                   <a href={content.website} target="_blank" rel="noreferrer">
@@ -456,9 +490,9 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
                 </Button>
               ) : null}
             </div>
-
+            
             {mapEmbedUrl ? (
-              <div className="rounded-2xl border border-border bg-card p-4">
+              <div className="rounded-3xl border border-border/60 bg-white/90 p-4 shadow-sm">
                 <p className="text-sm font-semibold text-foreground">Location map</p>
                 <div className="mt-4 overflow-hidden rounded-xl border border-border">
                   <iframe
@@ -470,9 +504,7 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
                 </div>
               </div>
             ) : null}
-
           </aside>
-          ) : null}
         </div>
 
         <section className="mt-12">
